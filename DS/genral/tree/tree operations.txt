@@ -1,0 +1,157 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node  
+{  
+    int data;  
+    struct node *left;  
+    struct node *right;  
+}node; 
+
+struct node *getNode(int node)  
+{  
+    struct node *newNode;  
+  
+    newNode = malloc(sizeof(struct node));  
+  
+    newNode->data   = node;  
+    newNode->left  = NULL;  
+    newNode->right = NULL;  
+  
+    return newNode;  
+}  
+
+struct node *insertNode(struct node *root, int node)  
+{  
+     if(root == NULL)  
+         return getNode(node);  
+  
+     if(root->data < node)  
+         root->right = insertNode(root->right,node);  
+  
+     if(root->data > node)  
+         root->left = insertNode(root->left,node);  
+  
+     return root;  
+} 
+
+int Height(struct node* node)
+{
+    if (node == NULL)
+        return 0;
+    else {
+        
+        int lh = Height(node->left);
+        int rh = Height(node->right);
+  
+       
+        if (lh > rh)
+            return (lh + 1);
+        else
+            return (rh + 1);
+    }
+}
+
+int left_height(node* node)
+{
+    int ht = 0;
+    while (node) {
+        ht++;
+        node = node->left;
+    }
+    return ht;
+}
+int right_height(node* node)
+{
+    int ht = 0;
+    while (node) {
+        ht++;
+        node = node->right;
+    }
+    return ht;
+}
+int TotalNodes(node* root)
+{
+   
+    if (root == NULL)
+        return 0;
+    
+    int lh = left_height(root);
+    int rh = right_height(root);
+    
+    if (lh == rh)
+        return (1 << lh) - 1;
+   
+    return 1 + TotalNodes(root->left) + TotalNodes(root->right);
+}
+
+void Inorder(struct node* node)
+{
+    if (node == NULL)
+        return;
+ 
+    Inorder(node->left);
+    printf("%d ", node->data);
+    Inorder(node->right);
+}
+struct node* MirrorImg(struct node *root){
+    if(root == NULL)
+        return NULL;
+ 
+    struct node* newNode = getNode(root->data);
+ 
+    newNode->right = MirrorImg(root->left);
+    newNode->left = MirrorImg(root->right);
+    return newNode;
+}
+
+int main()
+{
+    struct node *root = NULL;
+    struct node *mirror;
+    printf("Tree Functions!!");
+    int ch;
+    int node;
+    int w = 1;
+    while(w==1){
+    printf("Enter your choice\n1.Insert node in the tree\n2.Height\n3.No. of nodes\n4.Mirror image\n5.Exit\n");
+    scanf("%d",&ch);
+    switch(ch)
+    {
+        case 1:
+        printf("Insert the node: ");
+        scanf("%d",&node);
+        root = insertNode(root,node); 
+        break;
+        
+        case 2:
+        printf("\nHeight of the tree is: %d \n",Height(root));
+        printf("\n");
+        break;
+        
+        case 3:
+        printf("\nNumber of nodes is: %d \n",TotalNodes(root));
+        printf("\n");
+        break;
+        
+        case 4:
+        printf("\nMirror image of the tree is: \n");
+        mirror = MirrorImg(root);
+        Inorder(mirror);
+        printf("\n");
+        break;
+        
+        case 5:
+        printf("\nExit!!");
+        w = 0;
+        break;
+        
+        default:
+        printf("\nInvalid Choice!!");
+        break;
+        
+    }
+    }
+
+    return 0;
+}

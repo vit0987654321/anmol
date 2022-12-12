@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <string.h>
+ struct classroom
+{
+    int Roll_no;
+    int total_marks;
+    char student_Name[70];
+};
+int P = 0;
+void assign(struct classroom * f ,int first,struct classroom * g,int last){
+    f[first].total_marks = g[last].total_marks;
+    f[first].Roll_no = g[last].Roll_no;
+    strcpy(f[first].student_Name,g[last].student_Name);
+    P++;
+}
+void display(struct classroom * arr, int n) {
+    int i;
+  for(i=0;i<n;i++){
+       printf("Student's Student Name: %s\n", arr[i].student_Name);
+       printf("Student's Roll no: %d\n", arr[i].Roll_no);
+       printf("Student's Total Marks: %d\n", arr[i].total_marks);
+   }
+}
+void insertionSort(struct classroom * arr, int n) {
+  for (int i = 1; i < n; i++) {
+    struct classroom tmp[1];
+    assign(tmp,0,arr,i);
+    int k = i - 1;
+    while (tmp[0].Roll_no < arr[k].Roll_no && k >= 0) {
+        assign(arr,k+1,arr,k);
+      --k;
+    }
+    assign(arr,k+1,tmp,0);
+  }
+}
+int main() {
+  int i, n;
+   printf("Number of students in class: ");
+   scanf("%d",&n);
+   struct classroom arr[n];
+   for(i=0;i<n;i++){
+       printf("Enter %d Student Name: ", i+1);
+       scanf("%s",&arr[i].student_Name);
+       printf("Enter %d Students Roll no: ", i+1);
+       scanf("%d",&arr[i].Roll_no);
+       printf("Enter %d students Total Marks: ", i+1);
+       scanf("%d",&arr[i].total_marks);
+    }
+  printf("NOT Sorted:\n");
+  display(arr, n);
+  insertionSort(arr, n);
+  printf("Sorted with key as student roll no.:\n");
+  display(arr, n);
+  printf("Number of Steps performed are %d\n",P);
+}

@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Faculty
+{
+    int id;
+    int subject_code;
+    char name[100];
+    char class[20];
+};
+int z = 0;
+void swap(struct Faculty * f ,int first,int last){
+    int temp;
+    char tempchr[100];
+    temp = f[first].subject_code;
+    f[first].subject_code = f[last].subject_code;
+    f[last].subject_code = temp;
+    temp = f[first].id;
+    f[first].id = f[last].id;
+    f[last].id = temp;
+    strcpy(tempchr,f[first].name);
+    strcpy(f[first].name,f[last].name);
+    strcpy(f[last].name,tempchr);
+    strcpy(tempchr,f[first].class);
+    strcpy(f[first].class,f[last].class);
+    strcpy(f[last].class,tempchr);
+    z++;
+}
+
+  void heapify(struct Faculty * arr, int n, int i) {
+    int max = i; 
+    int leftChild = 2 * i + 1;
+    int rightChild = 2 * i + 2;
+
+    if (leftChild < n && arr[leftChild].id > arr[max].id)
+      max = leftChild;
+
+    if (rightChild < n && arr[rightChild].id > arr[max].id)
+      max = rightChild;
+
+    if (max != i) {
+      swap(arr,i,max);
+      heapify(arr, n, max);
+    }
+  }
+
+  void heapSort(struct Faculty * arr, int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+      heapify(arr, n, i);
+
+    for (int i = n - 1; i >= 0; i--) {
+      swap(arr,0,i); 
+
+      heapify(arr, i, 0); 
+    }
+  }
+
+
+void display(struct Faculty * arr, int n) {
+    int i;
+  for(i=0;i<n;i++){
+       printf("Faculty name: %s\n", arr[i].name);
+       printf("Faculty class name: %s\n", arr[i].class);
+       printf("Facultys id: %d\n", arr[i].id);
+       printf("Facultys subject code: %d\n", arr[i].subject_code);
+   }
+}
+
+
+  int main() {
+    int i, n;
+   printf("How many Facultys are u going to enter?: ");
+   scanf("%d",&n);
+   struct Faculty arr[n];
+   for(i=0;i<n;i++){
+       printf("Enter %d Facultys id: ", i+1);
+       scanf("%d",&arr[i].id);
+       printf("Enter %d Faculty name: ", i+1);
+       scanf("%s",&arr[i].name);
+       printf("Enter %d Faculty class: ", i+1);
+       scanf("%s",&arr[i].class);
+       printf("Enter %d Facultys subjectcode: ", i+1);
+       scanf("%d",&arr[i].subject_code);
+    }
+    printf("\n Non-sorted array:\n");
+    display(arr, n);
+    heapSort(arr, n);
+
+    printf("\n Sorted array:\n");
+    display(arr, n);
+    printf("number of swaps performed are %d\n",z);
+  }
+S

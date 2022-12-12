@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+  int data;
+  struct node *left;
+  struct node *right;
+};
+
+struct node *
+getNode (int node)
+{
+  struct node *newNode;
+
+  newNode = malloc (sizeof (struct node));
+
+  newNode->data = node;
+  newNode->left = NULL;
+  newNode->right = NULL;
+
+  return newNode;
+}
+
+struct node *
+insertNode (struct node *root, int node)
+{
+  if (root == NULL)
+    return getNode (node);
+
+  if (root->data < node)
+    root->right = insertNode (root->right, node);
+
+  if (root->data > node)
+    root->left = insertNode (root->left, node);
+
+  return root;
+}
+
+//InOrder
+void
+Inorder (struct node *node)
+{
+  if (node == NULL)
+    return;
+
+  Inorder (node->left);
+  printf ("%d ", node->data);
+  Inorder (node->right);
+}
+
+//PreOrder
+void
+Preorder (struct node *node)
+{
+  if (node == NULL)
+    return;
+
+  printf ("%d ", node->data);
+  Preorder (node->left);
+  Preorder (node->right);
+}
+
+//PostOrder
+void
+Postorder (struct node *node)
+{
+  if (node == NULL)
+    return;
+
+  Postorder (node->left);
+  Postorder (node->right);
+  printf ("%d ", node->data);
+}
+
+int
+main ()
+{
+  struct node *root = NULL;
+  printf ("Trees!!");
+  int ch;
+  int node;
+  int w = 1;
+  while (w == 1)
+    {
+      printf
+	("Enter your choice\n1.Insert node in the tree\n2.Inorder\n3.Preorder\n4.Postorder\n5.Exit\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("Insert the node: ");
+	  scanf ("%d", &node);
+	  root = insertNode (root, node);
+	  break;
+
+	case 2:
+	  printf ("\nInorder!!");
+	  printf ("\nInorder Traversal is: \n");
+	  Inorder (root);
+	  printf ("\n");
+	  break;
+
+	case 3:
+	  printf ("\nPreorder!!");
+	  printf ("\nPreorder Traversal is: \n");
+	  Preorder (root);
+	  printf ("\n");
+	  break;
+
+	case 4:
+	  printf ("\nPostorder!!");
+	  printf ("\nPostorder Traversal is: \n");
+	  Postorder (root);
+	  printf ("\n");
+	  break;
+
+	case 5:
+	  printf ("\nExit!!");
+	  w = 0;
+	  break;
+
+	default:
+	  printf ("\nInvalid Choice!!");
+	  break;
+	}
+    }
+  return 0;
+}

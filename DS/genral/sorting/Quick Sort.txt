@@ -1,0 +1,69 @@
+#include<stdio.h>
+#include <string.h>
+struct classroom
+{
+    int Roll_no;
+    int Total_Marks;
+    char student_Name[70];
+};
+int n = 0 ;
+void swap(struct classroom * f ,int first,int last){
+    int temp;
+    char tempchr[70];
+    temp = f[first].Total_Marks;
+    f[first].Total_Marks = f[last].Total_Marks;
+    f[last].Total_Marks = temp;
+    temp = f[first].Roll_no;
+    f[first].Roll_no = f[last].Roll_no;
+    f[last].Roll_no = temp;
+    strcpy(tempchr,f[first].student_Name);
+    strcpy(f[first].student_Name,f[last].student_Name);
+    strcpy(f[last].student_Name,tempchr);
+}
+void quicksort(struct classroom * f ,int first,int last){
+   int i, k, pivot, temp;
+   if(first<last){
+      pivot=f[first].Roll_no;
+      i=first;
+      k=last;
+      while(i<k){
+         while(f[i].Roll_no<=pivot&&i<last){
+             i++;
+        }
+         while(f[k].Roll_no>pivot){
+             k--;
+        }
+         if(i<k){
+             swap(f,i,k);
+             n++;
+         }
+      }
+      swap(f,k,first);
+      n++;
+      quicksort(f,first,k-1);
+      quicksort(f,k+1,last);
+   }
+}
+int main(){
+   int i, count;
+   printf("Number of students in class: ");
+   scanf("%d",&count);
+   struct classroom arr[count];
+   for(i=0;i<count;i++){
+       printf("Enter %d Students Roll_no: ", i+1);
+       scanf("%d",&arr[i].Roll_no);
+       printf("Enter %d Student Student_Name: ", i+1);
+       scanf("%s",&arr[i].student_Name);
+       printf("Enter %d Students Total_Marks: ", i+1);
+       scanf("%d",&arr[i].Total_Marks);
+    }
+   quicksort(arr,0,count-1);
+   printf("Sorted with key as Student_roll_no.: \n");
+   for(i=0;i<count;i++){
+       printf("Student's Student_Name: %s\n", arr[i].student_Name);
+       printf("Student's Roll_no: %d\n", arr[i].Roll_no);
+       printf("Student's Total_Marks: %d\n", arr[i].Total_Marks);
+   }
+   printf("Number of swaps performed are %d\n",n);
+   return 0;
+}

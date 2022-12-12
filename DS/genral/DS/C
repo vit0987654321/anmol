@@ -1,0 +1,68 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<assert.h>
+  
+struct LAB
+{
+    int data;
+    struct LAB* next;
+};
+struct LAB* SortedMerge(struct LAB* a, struct LAB* b) 
+{
+  struct LAB* result = NULL;
+    if (a == NULL) 
+     return(b);
+  else if (b==NULL) 
+     return(a);
+  
+  if (a->data <= b->data) 
+  {
+     result = a;
+     result->next = SortedMerge(a->next, b);
+  }
+  else 
+  {
+     result = b;
+     result->next = SortedMerge(a, b->next);
+  }
+  return(result);
+}
+void push(struct LAB** start_ref, int new_data)
+{
+    struct LAB* new_LAB =
+        (struct LAB*) malloc(sizeof(struct LAB));
+    new_LAB->data  = new_data;
+    new_LAB->next = (*start_ref);
+    (*start_ref)    = new_LAB;
+}
+  
+void printList(struct LAB *LAB)
+{
+    while (LAB!=NULL)
+    {
+        printf("%d ", LAB->data);
+        LAB = LAB->next;
+    }
+}
+  
+int main()
+{
+    struct LAB* sorted = NULL;
+    struct LAB* a = NULL;
+    struct LAB* b = NULL;
+  
+    push(&a, 15);
+    push(&a, 10);
+    push(&a, 5);
+  
+    push(&b, 20);
+    push(&b, 3);
+    push(&b, 2);
+  
+    sorted = SortedMerge(a, b);
+  
+    printf("Mixed Linked List is: \n");
+    printList(sorted);
+  
+    return 0;
+}

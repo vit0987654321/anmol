@@ -1,0 +1,209 @@
+#include <stdio.h>
+#define SIZE 12
+
+int arr1[SIZE];
+int front = -1, rear = -1;
+
+void
+show (int stack[], int size, int top)
+{
+  int i;
+  for (i = 0; i < size; i++)
+    {
+      printf ("\nElement at %d is %d", top, stack[top]);
+      top = top - 1;
+    }
+}
+
+void
+reverse (int stack[], int qu[], int *t, int *r, int *f)
+{
+  *f = 0;
+  while (*t > -1)
+    {
+      *r = *r + 1;
+      qu[*r] = stack[*t];
+      *t = *t - 1;
+    }
+  while (*f <= *r)
+    {
+      *t = *t + 1;
+      stack[*t] = qu[*f];
+      *f = *f + 1;
+    }
+}
+
+int
+isFull ()
+{
+  if ((front == rear + 1) || (front == 0 && rear == SIZE - 1))
+    {
+      return 1;
+    }
+  else
+    {
+      return 0;
+    }
+}
+
+int
+isEmpty ()
+{
+  if (front == -1)
+    {
+      return 1;
+    }
+  else
+    {
+      return 0;
+    }
+}
+
+void
+Enqueue (int j)
+{
+  if (isFull ())
+    {
+      printf ("\n !!Queue is full!! \n");
+    }
+  else
+    {
+      if (front == -1)
+ front = 0;
+      rear = (rear + 1) % SIZE;
+      arr1[rear] = j;
+      printf ("\n Element Added :%d", j);
+    }
+
+}
+
+int
+Dequeue ()
+{
+  int j;
+  if (isEmpty ())
+    {
+      printf ("\n!! Queue is empty !! \n");
+      return (-1);
+    }
+  else
+    {
+      j = arr1[front];
+      if (front == rear)
+ {
+   front = -1;
+   rear = -1;
+ }
+
+      else
+ {
+   front = (front + 1) % SIZE;
+ }
+      printf ("\n Element removed :%d \n", j);
+      return (j);
+    }
+
+}
+
+void
+Display ()
+{
+  int i;
+  if (isEmpty ())
+    {
+      printf (" \n Empty Queue\n");
+    }
+  else
+    {
+
+      printf ("\n Elements are: ");
+      for (i = front; i != rear; i = (i + 1) % SIZE)
+ {
+   printf ("%d ", arr1[i]);
+ }
+      printf ("%d ", arr1[i]);
+    }
+}
+
+
+int
+main ()
+{
+  int ch;
+  int w = 1;
+  int n;
+  int x;
+
+  int t, i, stack[SIZE], quee[SIZE];
+  int top = -1, front1 = -1, rear1 = -1;
+  while (w == 1)
+    {
+      printf
+ ("\n1.Implement Circular Queue \n2.Reverse a stack using Queue \n3.Exit\nEnter your choice: ");
+      scanf ("%d", &ch);
+      switch (ch)
+ {
+ case 1:
+   printf ("\nImplement Circular Queue\n");
+   int h = 1;
+   while (h == 1)
+     {
+       printf
+  ("\nChoose the function that you want to perform\n1.Enqueue\n2.Dequeue\n3.Display Queue\n4.Exit Queue Function: ");
+       int c;
+       scanf ("%d", &c);
+       if (c == 1)
+  {
+    int j;
+    printf ("Enter the element to be added: ");
+    scanf ("%d", &j);
+    Enqueue (j);
+  }
+       else if (c == 2)
+  {
+    Dequeue ();
+  }
+       else if (c == 3)
+  {
+    Display ();
+  }
+       else if (c == 4)
+  {
+    h = 0;
+  }
+       else
+  {
+    h = 0;
+  }
+     }
+
+   break;
+ case 2:
+   printf ("\nReverse a stack using Queue\n");
+   printf ("Enter number of elements of stack: ");
+   scanf ("%d", &n);
+
+   for (int i = 0; i < n; i++)
+     {
+       top = top + 1;
+       printf ("Enter element %d: ", top + 1);
+       scanf ("%d", &x);
+       stack[top] = x;
+     }
+   show (stack, n, top);
+   reverse (stack, quee, &top, &rear1, &front1);
+   printf ("\nAfter reverse..............");
+   show (stack, n, top);
+
+   break;
+ case 3:
+   w = 0;
+   printf ("\nExit!!");
+   break;
+ default:
+   printf ("Invalid Choice!!");
+   break;
+ }
+    }
+  return 0;
+}

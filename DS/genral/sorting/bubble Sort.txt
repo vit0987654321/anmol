@@ -1,0 +1,61 @@
+#include <stdio.h>
+struct student
+{
+    int roll_no;
+    int marks;
+    char name;
+};
+void swap(struct student * f ,int first,int last){
+    int temp;
+    char tempchr;
+    temp = f[first].marks;
+    f[first].marks = f[last].marks;
+    f[last].marks = temp;
+    temp = f[first].roll_no;
+    f[first].roll_no = f[last].roll_no;
+    f[last].roll_no = temp;
+//     tempchr = f[first].name;
+//     f[first].name = f[last].name;
+//     f[last].name = tempchr;
+}
+void bubbleSort(struct student * arr , int size) {
+  for (int j = 0; j < size - 1; ++j) {
+    for (int i = 0; i < size - j - 1; ++i) {
+
+      if (arr[i].roll_no > arr[i + 1].roll_no) {
+          swap(arr,i,i+1);
+//         int temp = arr[i];
+//         arr[i] = arr[i + 1];
+//         arr[i + 1] = temp;
+      }
+    }
+  }
+}
+
+// void display(int arr[], int size) {
+//   for (int i = 0; i < size; ++i) {
+//     printf("%d  ", arr[i]);
+//   }
+//   printf("\n");
+// }
+
+int main() {
+  int i, count;
+   printf("How many students are u going to enter?: ");
+   scanf("%d",&count);
+   struct student arr[count];
+
+   for(i=0;i<count;i++){
+       printf("Enter %d students roll no: ", i+1);
+       scanf("%d",&arr[i].roll_no);
+       printf("Enter %d students marks: ", i+1);
+       scanf("%d",&arr[i].marks);
+    }
+  bubbleSort(arr, count);
+  printf("Order of Sorted elements: \n");
+   for(i=0;i<count;i++){
+       printf("%d students roll no: %d\n", i+1,arr[i].roll_no);
+       printf("students marks: %d\n", arr[i].marks);
+
+   }
+}

@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Faculty
+{
+    int ID;
+    int subject_code;
+    char name[100];
+    char class[100];
+};
+int x = 0 ;
+void assign(struct Faculty * f ,int first,struct Faculty * g,int last){
+    f[first].subject_code = g[last].subject_code;
+    f[first].ID = g[last].ID;
+    strcpy(f[first].name,g[last].name);
+    strcpy(f[first].class,g[last].class);
+}
+
+void merge(struct Faculty * arr, int start, int mid, int end) {
+
+  int len1 = mid - start + 1;
+  int len2 = end - mid;
+
+  struct Faculty leftArr[len1], rightArr[len2];
+
+  for (int i = 0; i < len1; i++){
+    assign(leftArr, i, arr,start + i);
+    x++;
+  }
+  for (int j = 0; j < len2; j++){
+    assign(rightArr,j ,arr,mid + 1 + j);
+    x++;
+  }
+  int i, j, k;
+  i = 0;
+  j = 0;
+  k = start;
+
+  while (i < len1 && j < len2) {
+    if (leftArr[i].ID <= rightArr[j].ID) {
+      assign(arr,k,leftArr,i);
+      i++;
+      x++;
+    } else {
+      assign(arr,k,rightArr,j);
+      j++;
+      x++;
+    }
+    k++;
+  }
+
+  while (i < len1) {
+    assign (arr,k,leftArr,i);
+    i++;
+    k++;
+    x++;
+  }
+
+  while (j < len2) {
+    assign(arr,k,rightArr,j);
+    j++;
+    k++;
+    x++;
+  }
+}
+
+void mergeSort(struct Faculty * arr, int start, int end) {
+  if (start < end) {
+
+    int mid = start + (end - start) / 2;
+    mergeSort(arr, start, mid);
+    mergeSort(arr, mid + 1, end);
+    merge(arr, start, mid, end);
+  }
+}
+
+void display(struct Faculty * arr, int sixe) {
+  for(int i=0;i<sixe;i++){
+       printf("Faculty name: %s\n", arr[i].name);
+       printf("Faculty class name: %s\n", arr[i].class);
+       printf(" Facultys id: %d\n", arr[i].ID);
+       printf("Facultys subject code: %d\n", arr[i].subject_code);
+   }
+  printf("\n");
+}
+int main() {
+   int i, count;
+   printf("How many Facultys are u going to enter?: ");
+   scanf("%d",&count);
+   struct Faculty arr[count];
+  for(i=0;i<count;i++){
+       printf("Enter Faculty ID: ");
+       scanf("%d",&arr[i].ID);
+       printf("Enter Faculty name: ");
+       scanf("%s",&arr[i].name);
+       printf("Enter Faculty's class name: ");
+       scanf("%s",&arr[i].class);
+       printf("Enter Facultys subject code:");
+       scanf("%d",&arr[i].subject_code);
+    }
+  printf("Original array\n");
+  display(arr, count);
+
+  mergeSort(arr, 0, count - 1);
+
+  printf("Sorted array\n");
+  display(arr, count);
+  printf("Number of comparisions are %d\n",x);
+}

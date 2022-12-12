@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Lab {
+  int data;
+  struct Lab* next;
+  struct Lab* prev;
+};
+void insertAfter(struct Lab* oldLab, int data) {
+  if (oldLab == NULL) {
+    printf("previous Lab cannot be null");
+    return;
+  }
+  struct Lab* new = (struct Lab*)malloc(sizeof(struct Lab));
+  new->data = data;
+  new->next = oldLab->next;
+  oldLab->next = new;
+  new->prev = oldLab;
+  if (new->next != NULL)
+    new->next->prev = new;
+}
+void insertEnd(struct Lab** head, int data) {
+  struct Lab* new = (struct Lab*)malloc(sizeof(struct Lab));
+  new->data = data;
+  new->next = NULL;
+  struct Lab* temp = *head;
+
+  if (*head == NULL) {
+    new->prev = NULL;
+    *head = new;
+    return;
+  }
+
+  while (temp->next != NULL)
+    temp = temp->next;
+
+
+  temp->next = new;
+
+  new->prev = temp;
+}
+void delete_Lab(struct Lab** head, struct Lab* del) {
+  if (*head == NULL || del == NULL)
+    return;
+  if (*head == del)
+    *head = del->next;
+
+  if (del->next != NULL)
+    del->next->prev = del->prev;
+  if (del->prev != NULL)
+    del->prev->next = del->next;
+  free(del);
+}
+void displayList(struct Lab* Lab) {
+  struct Lab* last;
+  while (Lab != NULL) {
+    printf("%d-", Lab->data);
+    last = Lab;
+    Lab = Lab->next;
+  }
+  if (Lab == NULL)
+    printf("end\n");
+}
+int main() {
+  struct Lab* head = NULL;
+  insertEnd(&head, 5);
+  insertEnd(&head, 9);
+  insertAfter(head, 11);
+  insertAfter(head->next, 15);
+  displayList(head);
+  deleteLab(&head, head->next->next->next);
+  displayList(head);
+}

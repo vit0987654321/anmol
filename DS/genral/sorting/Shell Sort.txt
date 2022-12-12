@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Employee
+{
+    int emp_id;
+    int emp_salary;
+    char name[100];
+};
+int z = 0 ;
+void swap(struct Employee * f ,int first,int last){
+    int temp;
+    char tempchr[100];
+    temp = f[first].emp_salary;
+    f[first].emp_salary = f[last].emp_salary;
+    f[last].emp_salary = temp;
+    temp = f[first].emp_id;
+    f[first].emp_id = f[last].emp_id;
+    f[last].emp_id = temp;
+    strcpy(tempchr,f[first].name);
+    strcpy(f[first].name,f[last].name);
+    strcpy(f[last].name,tempchr);
+    z++;
+}
+void shellsort(struct Employee * arr, int num)
+{
+    int i, j, k;
+    for (i = num / 2; i > 0; i = i / 2)
+    {
+        for (j = i; j < num; j++)
+        {
+            for(k = j - i; k >= 0; k = k - i)
+            {
+                if (arr[k+i].emp_id >= arr[k].emp_id)
+                    break;
+                else
+                {
+                    swap(arr,k,k+1);
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    int i, count;
+   printf("Enter number of Employees: ");
+   scanf("%d",&count);
+   struct Employee arr[count];
+   for(i=0;i<count;i++){
+       printf("Enter %d Employee's Id: ", i+1);
+       scanf("%d",&arr[i].emp_id);
+       printf("Enter %d Employee's Name: ", i+1);
+       scanf("%s",&arr[i].name);
+       printf("Enter %d Employee's Salary: ", i+1);
+       scanf("%d",&arr[i].emp_salary);
+    }
+    shellsort(arr, count);
+    printf("Employee sorted based on ID: \n");
+   for(i=0;i<count;i++){
+       printf("Employee's Id no: %d\n", arr[i].emp_id);
+       printf("Employee's Name: %s\n", arr[i].name);
+       printf("Employee's Salary: %d\n", arr[i].emp_salary);
+   }
+   printf("number of swaps performed are %d\n",z);
+   return 0;
+}
